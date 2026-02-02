@@ -1,6 +1,6 @@
 <div align="center">
   
-# 🌐 DIWA — AI Interview Copilot
+# 🌐 DIWA Copilot — Your AI Interview Partner
 
 **Real-time AI coaching that floats invisibly over your screen during video interviews.**  
 *Never blank on a question again.*
@@ -24,7 +24,7 @@
 | **macOS** (Universal) | [Download .dmg](https://github.com/jortega0033/diwa-releases/releases/latest) | macOS 11+ |
 | **Windows** (x64) | [Download .exe](https://github.com/jortega0033/diwa-releases/releases/latest) | Windows 10+ |
 
-> 💡 **Free to use** — Just bring your own OpenAI API key
+> 💡 **Free to use** — Just bring your own [OpenAI API key](https://platform.openai.com/api-keys)
 
 ---
 
@@ -52,45 +52,13 @@ API keys encrypted via OS keychain. **No data leaves your machine except to Open
 
 ## 🚀 How It Works
 
-```
-1️⃣ Download & Install    →    Grab the installer. No sign-up needed.
-2️⃣ Add Your API Key      →    Paste your OpenAI key. Stored locally & encrypted.
-3️⃣ Start Your Interview  →    Launch DIWA, join your call, let AI handle the rest.
-```
+| Step | Action |
+|------|--------|
+| 1️⃣ | **Download & Install** — Grab the installer. No sign-up needed. |
+| 2️⃣ | **Add Your API Key** — Paste your [OpenAI key](https://platform.openai.com/api-keys). Stored locally & encrypted. |
+| 3️⃣ | **Start Your Interview** — Launch DIWA Copilot, join your call, let AI handle the rest. |
 
 **Up and running in 3 minutes.**
-
----
-
-## 🖥️ Preview
-
-<div align="center">
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  DIWA Overlay                                    ─ □ ×      │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  📝 Question Detected                                       │
-│  "Tell me about a time you had to deal with a difficult     │
-│   stakeholder..."                                           │
-│                                                             │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
-│                                                             │
-│  🤖 AI Response                                             │
-│  • At [Company], PM wanted feature that conflicted with     │
-│    tech debt priorities                                     │
-│  • Scheduled 1:1, presented data on maintenance cost        │
-│  • Compromised: shipped MVP now, full version in Q2         │
-│  • Result: Shipped 2 weeks early, PM became advocate        │
-│                                                             │
-│  ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐               │
-│  │ ▶️  │ ⏹️  │ 🏠  │ 📌  │ 👻  │ 🎤  │ 🗑️  │               │
-│  └─────┴─────┴─────┴─────┴─────┴─────┴─────┘               │
-└─────────────────────────────────────────────────────────────┘
-```
-
-</div>
 
 ---
 
