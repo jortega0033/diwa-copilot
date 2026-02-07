@@ -5,13 +5,13 @@
 **Real-time AI coaching that floats invisibly over your screen during video interviews.**  
 *Never blank on a question again.*
 
-[![Latest Release](https://img.shields.io/github/v/release/jortega0033/diwa-releases?style=for-the-badge&color=10a37f)](https://github.com/jortega0033/diwa-releases/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/jortega0033/diwa-releases/total?style=for-the-badge&color=22c55e)](https://github.com/jortega0033/diwa-releases/releases)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-71717a?style=for-the-badge)](https://github.com/jortega0033/diwa-releases/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/jortega0033/diwa-copilot?style=for-the-badge&color=10a37f)](https://github.com/jortega0033/diwa-copilot/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/jortega0033/diwa-copilot/total?style=for-the-badge&color=22c55e)](https://github.com/jortega0033/diwa-copilot/releases)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-71717a?style=for-the-badge)](https://github.com/jortega0033/diwa-copilot/releases/latest)
 
 ---
 
-[**⬇️ Download**](#-download) · [**✨ Features**](#-features) · [**🚀 How It Works**](#-how-it-works) · [**💬 Support**](https://github.com/jortega0033/diwa-releases/issues)
+[**⬇️ Download**](#-download) · [**✨ Features**](#-features) · [**🚀 How It Works**](#-how-it-works) · [**💬 Support**](https://github.com/jortega0033/diwa-copilot/issues)
 
 </div>
 
@@ -23,8 +23,8 @@
 
 | Platform | Download | Requirements |
 |----------|----------|--------------|
-| **macOS** (Universal) | [Download .dmg](https://github.com/jortega0033/diwa-releases/releases/latest) | macOS 11+ |
-| **Windows** (x64) | [Download .exe](https://github.com/jortega0033/diwa-releases/releases/latest) | Windows 10+ |
+| **macOS** (Universal) | [Download .dmg](https://github.com/jortega0033/diwa-copilot/releases/latest) | macOS 11+ |
+| **Windows** (x64) | [Download .exe](https://github.com/jortega0033/diwa-copilot/releases/latest) | Windows 10+ |
 
 > 💡 **Free to use** — Just bring your own [OpenAI API key](https://platform.openai.com/api-keys)
 
@@ -125,7 +125,7 @@ The entire interface is designed for **under 20ms of visual attention** — glan
 
 ## 💬 Support
 
-Having issues? [Open an issue](https://github.com/jortega0033/diwa-releases/issues) and we'll help you out.
+Having issues? [Open an issue](https://github.com/jortega0033/diwa-copilot/issues) and we'll help you out.
 
 ---
 
