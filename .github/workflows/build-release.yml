@@ -1,0 +1,119 @@
+# =============================================================================
+# Diwa Build Release (Public Repo - Free Minutes)
+# =============================================================================
+# Triggered by private repo to build installers without exposing source code.
+# Source is downloaded from private release, built, then binaries uploaded back.
+# =============================================================================
+
+name: Build Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build (e.g., 1.4.1)'
+        required: true
+        type: string
+      private_repo:
+        description: 'Private repo (owner/repo)'
+        required: true
+        type: string
+        default: 'jortega0033/diwa'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            platform: mac
+          - os: windows-latest
+            platform: win
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Download source from private release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_REPO_PAT }}
+        run: |
+          VERSION="v${{ inputs.version }}"
+          REPO="${{ inputs.private_repo }}"
+          
+          echo "📥 Downloading source for $VERSION from $REPO..."
+          
+          # Download the source tarball from the release (draft releases work with proper auth)
+          gh release download "$VERSION" \
+            --repo "$REPO" \
+            --archive=tar.gz \
+            --output source.tar.gz
+          
+          # Extract to current directory
+          mkdir -p source
+          tar -xzf source.tar.gz -C source --strip-components=1
+          rm source.tar.gz
+          
+          echo "✅ Source downloaded and extracted"
+          ls -la source/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Setup Python (macOS only)
+        if: matrix.os == 'macos-latest'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        working-directory: source
+        run: npm ci
+
+      - name: Build application
+        working-directory: source
+        shell: bash
+        run: |
+          export PATH="$(pwd)/node_modules/.bin:$PATH"
+          
+          if [[ "${{ matrix.platform }}" == "mac" ]]; then
+            npm run clean && tsc -b && vite build && npm run copy:preload && BETA_BUILD=true npm run protect:code
+            electron-builder --mac --arm64 --publish never
+            electron-builder --mac --x64 --publish never
+          else
+            npm run clean && npm run build:sidecar:win && tsc -b && vite build && npm run copy:preload && BETA_BUILD=true npm run protect:code
+            npx electron-builder --win --x64 --publish never
+          fi
+
+      - name: Upload to private repo release
+        working-directory: source
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_REPO_PAT }}
+        run: |
+          VERSION="v${{ inputs.version }}"
+          REPO="${{ inputs.private_repo }}"
+          
+          echo "📤 Uploading ${{ matrix.platform }} installers to $REPO release $VERSION..."
+          
+          for file in release/*.dmg release/*.exe; do
+            if [ -f "$file" ]; then
+              basename=$(basename "$file")
+              # Skip blockmap files and duplicate naming
+              if [[ "$basename" == *.blockmap ]] || [[ "$basename" == Diwa.Setup.* ]]; then
+                echo "  Skipping: $basename"
+                continue
+              fi
+              echo "  Uploading: $basename"
+              gh release upload "$VERSION" "$file" --repo "$REPO" --clobber
+            fi
+          done
+          
+          echo "✅ ${{ matrix.platform }} installers uploaded to private repo"
