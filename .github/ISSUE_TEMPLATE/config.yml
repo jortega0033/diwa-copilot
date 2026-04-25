@@ -1,5 +1,11 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Diwa Project Discussions
-    url: https://github.com/jortega0033/diwa/discussions
-    about: Please ask and answer questions here.
+  - name: 🌐 Diwa Copilot Website
+    url: https://diwacopilot.com
+    about: Learn more about Diwa Copilot and download the latest version.
+  - name: 📱 Diwa Web App
+    url: https://app.diwacopilot.com
+    about: Sign in, manage your account, buy credits, and access mock interview sessions.
+  - name: ⬇️ Download Page
+    url: https://diwacopilot.com/download
+    about: Download the latest Diwa Copilot installer for macOS or Windows.
