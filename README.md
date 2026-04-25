@@ -1,15 +1,17 @@
-# 🌐 Diwa Copilot — Your AI Interview Partner
+<div align="center">
 
-**Real-time AI coaching that floats invisibly over your screen during video interviews.**  
-*Never blank on a question again.*
+# Diwa Copilot
 
-[![Version](https://img.shields.io/badge/version-1.7.0-10a37f?style=for-the-badge)](https://github.com/jortega0033/diwa-copilot/releases/latest)
+**Real-time AI interview coaching that floats invisibly over your screen.**  
+*Stay sharp. Stay confident. Never blank on a question again.*
+
+[![Version](https://img.shields.io/badge/version-2.0.0-10a37f?style=for-the-badge)](https://github.com/jortega0033/diwa-copilot/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/jortega0033/diwa-copilot/total?style=for-the-badge&color=22c55e)](https://github.com/jortega0033/diwa-copilot/releases)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-71717a?style=for-the-badge)](https://github.com/jortega0033/diwa-copilot/releases/latest)
 
 ---
 
-[**⬇️ Download**](#-download) · [**✨ Features**](#-features) · [**🚀 How It Works**](#-how-it-works) · [**💬 Support**](https://github.com/jortega0033/diwa-copilot/issues)
+[**⬇️ Download**](#-download) · [**✨ Features**](#-features) · [**🚀 How It Works**](#-how-it-works) · [**❓ FAQ**](#-faq) · [**💬 Support**](#-support)
 
 </div>
 
@@ -17,143 +19,146 @@
 
 ## ⬇️ Download
 
-> 🔒 **For your safety, download only from this website. Third-party sources may be unsafe.**
+> 🔒 **For your safety, download only from [diwacopilot.com](https://diwacopilot.com/download) or the links below. Third-party sources may be unsafe.**
 
-| Platform | Download | Requirements |
-|----------|----------|--------------|
-| **macOS** (Universal) | [Download .dmg](https://github.com/jortega0033/diwa-copilot/releases/latest) | macOS 11+ |
-| **Windows** (x64) | [Download .exe](https://github.com/jortega0033/diwa-copilot/releases/latest) | Windows 10+ |
+### macOS — v2.0.0
 
-> 💡 **Free to use** — Just bring your own [OpenAI API key](https://platform.openai.com/api-keys)
+| Architecture | Download | Requirements |
+|---|---|---|
+| **Apple Silicon** (M1/M2/M3/M4) | [⬇️ Download DMG](https://storage.googleapis.com/diwa-installers-prod/v2.0.0/Diwa-Copilot-2.0.0-arm64.dmg) | macOS 11+ |
+| **Intel** (x64) | [⬇️ Download DMG](https://storage.googleapis.com/diwa-installers-prod/v2.0.0/Diwa-Copilot-2.0.0-x64.dmg) | macOS 10.15+ |
+
+> **Always download the latest version from [diwacopilot.com/download](https://diwacopilot.com/download)**
+
+### Windows
+
+> 🪟 **Windows installer coming soon.** Sign up at [app.diwacopilot.com](https://app.diwacopilot.com) to get notified.
 
 ---
 
 ## ✨ Features
 
-### 🎤 Native System Audio Capture
-Captures system audio using native OS APIs—**no third-party drivers required**. Works with **Zoom**, **Google Meet**, **Teams**, and any app that plays audio.
+### 👻 Ghost Mode Overlay
+A transparent, always-on-top panel floats over your video call. Ghost mode makes it fully click-through — **invisible to screen shares**.
 
-- **macOS:** Automatic loopback audio capture
-- **Windows:** Native WASAPI loopback (no setup required)
-- **Smart Audio:** Mic button only appears when needed (with "FALLBACK" badge when system audio fails)
+### 🎤 Real-Time AI Responses
+Diwa listens to the conversation via system audio capture and generates contextual responses in **~200ms**. No awkward pauses.
+
+- **macOS:** Native loopback audio — no third-party drivers needed
+- **Windows:** WASAPI loopback — no setup required
 
 ### 🎭 Mock Interview Mode
-Practice before your real interview with AI-generated sessions:
+Practice before the real thing:
+- 5 tailored questions based on your target role and company
+- Live speech-to-text as you answer
+- Detailed feedback: clarity scores (0–100), STAR method analysis, strengths, improvements
+- Session history to track your progress
 
-- **5 tailored questions** based on your role and company
-- **Live speech-to-text** as you answer each question
-- **Detailed feedback** including clarity scores (0-100), STAR method analysis, strengths, and improvement areas
-- **Session history** to track your progress over time
-
-### 👻 Ghost Mode
-Click-through transparency lets mouse events pass through. The overlay is **truly invisible** to screen shares.
+### 🧠 Intel Engine
+AI-powered company and role research. Get deep context on your target company before the interview so you always sound prepared.
 
 ### 📄 Context Injection
-Upload your CV, job description, and company docs. AI tailors responses to your specific background.
-
-### ⚡ ~200ms Latency
-Real-time pipeline delivers responses fast enough to use mid-conversation. No awkward pauses.
+Upload your CV, job description, and knowledge base docs. Diwa tailors every response to your specific background.
 
 ### 👤 Multi-Persona System
-Create personas for different roles. The AI becomes "Jake, Senior Engineer" with your background baked in.
+Create personas for different roles. The AI becomes "Jake, Senior Engineer at Acme" with your background baked in.
 
 ### 🎨 Custom Response Styles
-Choose from 8 built-in styles (Bullet Points, Conversational, STAR Method, etc.) or create your own custom prompt with optional "strict mode" for plain prose responses.
-
-### 🔒 Secure & Private
-API keys encrypted via OS keychain. **No data leaves your machine except to OpenAI.** No telemetry.
-
-### 🚀 Native Splash Screen
-Polished launch experience with an animated splash screen while the app initializes. No white flash or loading delays.
+8 built-in styles (Bullet Points, STAR Method, Conversational, etc.) or define your own custom prompt.
 
 ---
 
 ## 🚀 How It Works
 
 | Step | Action |
-|------|--------|
-| 1️⃣ | **Download & Install** — Grab the installer. No sign-up needed. |
-| 2️⃣ | **Add Your API Key** — Paste your [OpenAI key](https://platform.openai.com/api-keys). Stored locally & encrypted. |
-| 3️⃣ | **Start Your Interview** — Launch Diwa Copilot, join your call, let AI handle the rest. |
+|---|---|
+| 1️⃣ | **Create an account** at [app.diwacopilot.com](https://app.diwacopilot.com) — free trial included |
+| 2️⃣ | **Download & install** Diwa Copilot for your platform |
+| 3️⃣ | **Sign in** with your Diwa account |
+| 4️⃣ | **Start your session** — join your interview call and let AI handle the rest |
 
-**Up and running in 3 minutes.**
+**Up and running in under 5 minutes.**
+
+---
+
+## 💳 Credits & Pricing
+
+Diwa uses a credit-based system. **No subscription required.**
+
+- **Free trial** — 2 × 30-minute mock interview sessions on sign-up, no credit card needed
+- **Credits** — 5 credits = 1 hour of live interview assistance, pro-rated per minute
+- **Buy credits** — purchase packs at [app.diwacopilot.com/dashboard/credits](https://app.diwacopilot.com/dashboard/credits)
 
 ---
 
 ## 📋 Requirements
 
-- **OpenAI API Key** — [Get one here](https://platform.openai.com/api-keys)
-- **macOS 11+** or **Windows 10+**
-- Active internet connection
+| | Requirement |
+|---|---|
+| **Account** | Free account at [app.diwacopilot.com](https://app.diwacopilot.com) |
+| **macOS** | macOS 11+ (Apple Silicon) or macOS 10.15+ (Intel) |
+| **Windows** | Windows 10+ (coming soon) |
+| **Network** | Active internet connection during sessions |
 
 ---
 
-## ❓ Frequently Asked Questions
+## ❓ FAQ
 
-### 🚨 Why does my computer say the app is "Unrecognized"?
-Because we are in early Beta, we haven't bought expensive code-signing certificates yet.
+### 🚨 Why does my Mac say the app is from an "unidentified developer"?
 
-- **macOS:** Right-click the app icon and select **Open**. (If you double-click, it might block you.)
-- **Windows:** Click "More Info" → "Run Anyway".
+These builds are currently unsigned (no Apple Developer certificate). This is expected.
 
-### 🔑 Is my API Key safe?
-Yes. We are a "Bring Your Own Key" app. Your key is stored **locally on your device** (encrypted via your OS Keychain). It is sent directly to OpenAI's servers to generate answers. It never touches our servers because **we don't have any servers**.
+**Fix:**
+1. Right-click the `.dmg` file → **Open**
+2. In the dialog, click **Open** again
+3. Drag **Diwa Copilot** to your Applications folder
+4. Right-click the app in Applications → **Open** on first launch
 
-### 🎧 Why do I need Screen Recording permission on Mac?
-macOS requires Screen & System Audio Recording permission to capture audio from other apps. Diwa uses native Chromium loopback (via `MacLoopbackAudioForScreenShare`)—no third-party audio drivers like BlackHole are needed.
+### 🎧 Why does Diwa need Screen Recording permission on Mac?
 
-**Pro Tip:** After enabling the permission, quit and relaunch Diwa Copilot to activate audio capture.
+macOS requires the Screen & System Audio Recording permission to capture audio from other apps (Zoom, Meet, Teams). Diwa uses native Chromium loopback — no third-party drivers like BlackHole are needed.
 
-### 🪟 How does audio capture work on Windows?
-Windows uses native WASAPI loopback to capture system audio automatically. When you click "Start Capture", audio begins recording immediately—no screen picker or extra steps required.
+**After enabling the permission:** Quit and relaunch Diwa Copilot to activate audio capture.
 
-### 💰 Is it really free?
-The app is free during the Beta period (until May 1, 2026). You only pay OpenAI for the API usage, which is usually pennies per interview.
+### 💳 Do I need to buy credits to try Diwa?
 
-### 🎤 What are the different AI models available?
-Diwa supports multiple OpenAI models:
+No. Every new account gets **2 free 30-minute mock interview sessions**. No credit card required to sign up. Buy credits only when you're ready for live interview sessions.
 
-- **GPT-4o** — Fast, multimodal flagship (recommended for most interviews)
-- **GPT-4 Turbo** — Previous generation flagship with 128K context
-- **GPT-3.5 Turbo** — Fast and affordable for simple questions
-- **Realtime API** — Native low-latency voice interaction (~200ms)
+### 🔒 Is my data private?
 
-### 🎭 How does Mock Interview Mode work?
-Click the "Mock Interview" button in the sidebar, select your target role and company, and Diwa will generate 5 tailored questions. Answer each question out loud, and get instant feedback on clarity, structure, and content. All sessions are saved locally so you can review your progress.
+Yes. Your audio is processed in real-time and is not stored. Your uploaded documents (CV, JD) are stored securely in your account and never shared. AI responses are generated via Diwa's secure backend — no data is exposed to third parties beyond what's needed to generate responses.
 
----
+### 🪟 When will Windows be available?
 
-## 🎨 Interface Design
+The Windows build is in progress. [Sign up](https://app.diwacopilot.com) and you'll be notified when it's ready.
 
-### Obsidian Glass HUD
-The overlay features a **minimalist "glass panel" design** that stays out of your way:
+### 🔄 How do I update the app?
 
-- **Floating Window** — Appears as a subtle, translucent panel above your video call
-- **Real-Time Messages** — See both interviewer questions and AI responses in a clean chat-like interface
-- **Status Indicator** — A pulsing green dot shows when Diwa is listening or processing
-- **Smart Controls** — Compact control bar at the bottom with intuitive buttons:
-  - ▶️ **Start/Stop** — Activate the session
-  - 📌 **Pin** — Keep on top of other windows
-  - 👻 **Ghost Mode** — Make even more invisible (click-through)
-  - 🏠 **Main Window** — Quick access to settings
-  - 🎤 **Mute** — Pause AI assistance
-  - 🗑️ **Clear** — Reset transcript
-  - 👁️ **Opacity Slider** — Adjust transparency (30-100%)
-
-The entire interface is designed for **under 20ms of visual attention** — glance down, grab the answer, get back to the conversation. The glass aesthetic evokes a "layer of intelligence" floating invisibly above your screen.
+Download the latest version from [diwacopilot.com/download](https://diwacopilot.com/download) and reinstall over the existing app. Your account data and settings are saved in the cloud.
 
 ---
 
 ## 💬 Support
 
-Having issues? [Open an issue](https://github.com/jortega0033/diwa-copilot/issues) and we'll help you out.
+| Channel | Link |
+|---|---|
+| 🐛 **Bug report** | [Open an issue](https://github.com/jortega0033/diwa-copilot/issues/new?template=bug_report.md) |
+| 💡 **Feature request** | [Open an issue](https://github.com/jortega0033/diwa-copilot/issues/new?template=feature_request.md) |
+| 🛠️ **Install help** | [Open an issue](https://github.com/jortega0033/diwa-copilot/issues/new?template=installation_help.md) |
+| 💬 **Feedback** | [Open an issue](https://github.com/jortega0033/diwa-copilot/issues/new?template=feedback.md) |
+| 🌐 **Website** | [diwacopilot.com](https://diwacopilot.com) |
+| 📱 **App** | [app.diwacopilot.com](https://app.diwacopilot.com) |
 
 ---
 
 <div align="center">
 
-**Built with Electron + React + Vite**
+**Built with Electron · React · Vite · Gemini AI**
 
 *Native system audio capture — no third-party drivers required*
 
 Made with ❤️ for job seekers everywhere
+
+[diwacopilot.com](https://diwacopilot.com)
+
+</div>
