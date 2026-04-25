@@ -1,15 +1,27 @@
 ---
-name: "🚀 Feature Request"
-about: "Suggest an idea for this project"
+name: "💡 Feature Request"
+about: "Suggest an improvement or new capability"
 title: "[FEAT] "
 labels: "enhancement"
 ---
 
-**Is your feature request related to a problem?**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Problem / Motivation
+<!-- What problem does this solve? What are you trying to do that you can't today? -->
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Proposed Solution
+<!-- A clear description of what you'd like to happen -->
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Alternatives Considered
+<!-- Any alternative approaches you've thought about -->
+
+## Use Case
+<!-- Describe a specific scenario where this would help you -->
+
+## Priority
+<!-- How important is this to you? -->
+- [ ] Nice to have
+- [ ] Would significantly improve my workflow
+- [ ] Blocking me from using Diwa effectively
+
+## Additional Context
+<!-- Screenshots, mockups, or anything else relevant -->
