@@ -1,0 +1,1313 @@
+{
+  "name": "Content Factory — Blog Draft",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Error Lane\nCentralized error response and Telegram alert.",
+        "height": 256,
+        "width": 560,
+        "color": 4
+      },
+      "id": "63fa6702-d415-402a-b69f-c16582c05722",
+      "name": "BG: Error Handling",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        12416,
+        3872
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Delivery and Observability\nWebhook delivery, response, Sheets mirror, and success notification.",
+        "height": 560,
+        "width": 1260,
+        "color": 7
+      },
+      "id": "6602eb6b-900a-4587-b490-bafa9d15c432",
+      "name": "BG: Delivery",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        12416,
+        3296
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Draft Generation Lane\nSchedule/webhook intake, auth/validation, prompt build, and blog draft generation.",
+        "height": 760,
+        "width": 1568,
+        "color": 6
+      },
+      "id": "fa397f45-b5a6-43a9-9806-72a64df0e206",
+      "name": "BG: Draft Core",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        10832,
+        3328
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Topic Bank Lane\nWeekly topic ideation, structured parsing, and sheet append.",
+        "height": 520,
+        "width": 1056,
+        "color": 5
+      },
+      "id": "1b0421b6-2d36-4147-a76a-b70721878d5a",
+      "name": "BG: Topic Bank",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        11344,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.9
+        }
+      },
+      "id": "29e63576-e569-4feb-a000-6430b9add1b8",
+      "name": "Gemini 2.5 Flash — Topics",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        11616,
+        3120
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "cHrRMLZLlruXw06l",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\"type\": \"object\", \"properties\": {\"topics\": {\"type\": \"array\", \"description\": \"Exactly 20 topic ideas, one per content pillar\", \"items\": {\"type\": \"object\", \"properties\": {\"topic\": {\"type\": \"string\", \"description\": \"Complete blog post title, 30-100 chars\"}, \"content_pillar\": {\"type\": \"string\", \"enum\": [\"interview-prep\", \"career-growth\", \"job-search\", \"ai-tools\", \"product-updates\", \"behavioral\", \"technical\", \"salary\", \"resume-cv-building\", \"networking-strategies\", \"remote-work-tips\", \"workplace-culture\", \"skill-development\", \"personal-branding\", \"mental-wellness-work\", \"freelancing-gig-economy\", \"startup-careers\", \"international-opportunities\", \"leadership-management\", \"negotiation-skills\"]}, \"suggested_angle\": {\"type\": \"string\", \"enum\": [\"cv-jd-context\", \"mock-interview\", \"real-time-coaching\", \"interview-conversion\"]}, \"suggested_persona\": {\"type\": \"string\", \"enum\": [\"software_engineer\", \"fresh_graduate\", \"career_shifter\", \"non_tech_professional\"]}}, \"required\": [\"topic\", \"content_pillar\", \"suggested_angle\", \"suggested_persona\"]}}}, \"required\": [\"topics\"]}",
+        "autoFix": true
+      },
+      "id": "2cb78833-5ce9-4e00-9bc7-6300ec3c1aef",
+      "name": "Topic Bank Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        11776,
+        3120
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "id": "75482068-ed9d-4af9-8fbc-923c5cadd068",
+      "name": "Gemini 2.5 Flash",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        12080,
+        3680
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "cHrRMLZLlruXw06l",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\", \"description\": \"SEO blog post title, 10-120 chars\"}, \"slug\": {\"type\": \"string\", \"description\": \"lowercase kebab-case URL slug, 3-100 chars\"}, \"meta_description\": {\"type\": \"string\", \"description\": \"SEO meta description, 50-160 chars\"}, \"excerpt\": {\"type\": \"string\", \"description\": \"1-2 sentence post excerpt, 80-300 chars\"}, \"intro\": {\"type\": \"string\", \"description\": \"Full intro section, ~200 words\"}, \"outline\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}, \"description\": \"Exactly 5 H2 section headings\"}, \"body_draft\": {\"type\": \"string\", \"description\": \"Full blog body across all 5 sections, 700-900 words\"}, \"tags\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}, \"description\": \"3-6 lowercase kebab-case tags\"}, \"linkedin_excerpt\": {\"type\": \"string\", \"description\": \"80-320 chars for LinkedIn sharing\"}}, \"required\": [\"title\", \"slug\", \"meta_description\", \"excerpt\", \"intro\", \"outline\", \"body_draft\", \"tags\", \"linkedin_excerpt\"]}"
+      },
+      "id": "70f635f3-b248-4369-8bac-897a1def2e53",
+      "name": "Blog Draft Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        12208,
+        3680
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ 'Topic: ' + $json.topic + ' | Pillar: ' + $json.content_pillar + ' | Angle: ' + $json.product_angle + ' | Persona: ' + $json.target_persona + ' | Tone: ' + $json.tone }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an expert content writer for Diwa Copilot, an AI interview coaching platform built for Filipino professionals and Southeast Asian job seekers.\n\nWrite a complete, high-quality, SEO-optimised blog post.\n\n**Specifications:**\n- Topic: {{ $json.topic }}\n- Content Pillar: {{ $json.content_pillar }}\n- Product Angle: {{ $json.product_angle }}\n- Target Persona: {{ $json.target_persona }}\n- Tone: {{ $json.tone }}\n\n**Persona guide:**\n- software_engineer → technical depth, systems thinking, specific tools\n- fresh_graduate → encouraging, practical first steps, relatable anxiety\n- career_shifter → transferable skills validation, reframing experience\n- non_tech_professional → jargon-free, confidence building, clear steps\n\n**Tone guide:**\n- clear_practical → direct advice with concrete examples\n- direct_supportive → honest but encouraging, no fluff\n- concise_confident → short punchy sentences, strong active verbs\n\n**Content requirements:**\n- intro: ~200 words, hook with a relatable pain point\n- outline: exactly 5 H2 section headings (no numbering prefix)\n- body_draft: 700-900 words covering all 5 sections\n- excerpt: 1-2 sentences, 80-300 chars, for search snippets\n- meta_description: 50-160 chars, keyword-rich, action-oriented\n- slug: lowercase kebab-case, 3-8 words derived from the title\n- tags: 3-6 tags, lowercase kebab-case\n- linkedin_excerpt: 80-320 chars\n- Format body_draft in clean markdown prose with a blank line between every paragraph\n- Do not hard-wrap sentences onto separate lines; only use line breaks for real paragraph boundaries\n- Keep H2 headings as markdown (## Heading), and ensure one blank line under each heading before paragraph text\n\nMention Diwa Copilot at most once, briefly, where genuinely relevant."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "778d1a18-c544-42e8-8284-13469602e9f2",
+      "name": "Generate Blog Draft",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        12064,
+        3456
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ 'Generate 20 fresh blog topic ideas. Today is ' + $now.format('YYYY-MM-DD') + '. Make them current, specific, and primarily relevant to Filipino job seekers.' }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a content strategist for Diwa Copilot, an AI interview coaching platform for Filipino professionals and Southeast Asian job seekers.\n\nGenerate exactly 20 unique, specific, timely blog topic ideas — one for each of the following content pillars:\n- interview-prep\n- career-growth\n- job-search\n- ai-tools\n- product-updates\n- behavioral\n- technical\n- salary\n- resume-cv-building\n- networking-strategies\n- remote-work-tips\n- workplace-culture\n- skill-development\n- personal-branding\n- mental-wellness-work\n- freelancing-gig-economy\n- startup-careers\n- international-opportunities\n- leadership-management\n- negotiation-skills\n\nRequirements for each topic:\n- Complete, specific blog post title (not a keyword or phrase)\n- While prioritizing relevance to Filipino professionals and Southeast Asian job seekers, also include a mix of topics that appeal to a broader professional audience.\n- 30-100 characters long\n- Clear search intent and SEO value\n- Include current context where natural (2026 job market, AI tools trend)\n- Avoid vague or purely generic topics"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "fc2583b9-b040-4493-bcf9-8a7db59aa277",
+      "name": "Generate Topic Ideas",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        11632,
+        2928
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.topics",
+        "options": {}
+      },
+      "id": "59b2a2d3-6900-47df-b141-b88cc9bb66ca",
+      "name": "Split Topics",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        12016,
+        2832
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 0"
+            }
+          ]
+        }
+      },
+      "id": "3b2dc15a-609a-4bf9-9b32-d5538e563405",
+      "name": "Topic Bank Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        11408,
+        2928
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kLDJHTVdqZ7Vt0GPVXyFt2M6S92V2__307LdB5IFfNc",
+          "mode": "list",
+          "cachedResultName": "Content Engine",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLDJHTVdqZ7Vt0GPVXyFt2M6S92V2__307LdB5IFfNc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1575559979,
+          "mode": "list",
+          "cachedResultName": "Diwa Copilot Blog",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLDJHTVdqZ7Vt0GPVXyFt2M6S92V2__307LdB5IFfNc/edit#gid=1575559979"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "topic": "={{ $json.topic }}",
+            "content_pillar": "={{ $json.content_pillar }}",
+            "suggested_angle": "={{ $json.suggested_angle }}",
+            "suggested_persona": "={{ $json.suggested_persona }}",
+            "status": "pending"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content_pillar",
+              "displayName": "content_pillar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "suggested_angle",
+              "displayName": "suggested_angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "suggested_persona",
+              "displayName": "suggested_persona",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "36379840-1c3e-4777-a9aa-9c35474a694b",
+      "name": "Append Topics to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        12192,
+        2832
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xkPsXzrwm8Vz3teI",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "3a7fdab4-60db-4ff3-a091-ad68bae088c3",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        10944,
+        3456
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content-factory-blog",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "1040c719-a6db-488c-b74e-9d2cea758132",
+      "webhookId": "86a1f182-82cb-44a6-871f-f49a0b3f11a4",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        10944,
+        3840
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst VALID_PILLARS  = ['interview-prep','career-growth','job-search','ai-tools','product-updates','behavioral','technical','salary'];\nconst VALID_ANGLES   = ['cv-jd-context','mock-interview','real-time-coaching','interview-conversion'];\nconst VALID_PERSONAS = ['software_engineer','fresh_graduate','career_shifter','non_tech_professional'];\nconst VALID_TONES    = ['clear_practical','direct_supportive','concise_confident'];\nconst ALLOWED_KEYS   = new Set(['request_id','topic','content_pillar','product_angle','target_persona','tone','requested_by']);\n\nconst body = $input.first().json.body;\nconst errors = [];\n\n// Unknown key check\nfor (const key of Object.keys(body)) {\n  if (!ALLOWED_KEYS.has(key)) errors.push('unknown_key: ' + key);\n}\n\n// request_id\nconst rid = (body.request_id ?? '').toString().trim();\nif (!rid) errors.push('request_id: required');\n\n// topic\nconst topic = (body.topic ?? '').toString().trim();\nif (!topic) errors.push('topic: required');\nelse if (topic.length < 10 || topic.length > 120) errors.push('topic: must be 10-120 chars, got ' + topic.length);\n\n// content_pillar\nconst pillar = (body.content_pillar ?? '').toString();\nif (!pillar) errors.push('content_pillar: required');\nelse if (!VALID_PILLARS.includes(pillar)) errors.push('content_pillar: invalid value \"' + pillar + '\"');\n\n// product_angle\nconst angle = (body.product_angle ?? '').toString();\nif (!angle) errors.push('product_angle: required');\nelse if (!VALID_ANGLES.includes(angle)) errors.push('product_angle: invalid value \"' + angle + '\"');\n\n// target_persona\nconst persona = (body.target_persona ?? '').toString();\nif (!persona) errors.push('target_persona: required');\nelse if (!VALID_PERSONAS.includes(persona)) errors.push('target_persona: invalid value \"' + persona + '\"');\n\n// tone\nconst tone = (body.tone ?? '').toString();\nif (!tone) errors.push('tone: required');\nelse if (!VALID_TONES.includes(tone)) errors.push('tone: invalid value \"' + tone + '\"');\n\n// requested_by\nconst requestedBy = (body.requested_by ?? '').toString().trim();\nif (!requestedBy) errors.push('requested_by: required');\nelse if (requestedBy.length > 50) errors.push('requested_by: max 50 chars');\n\nif (errors.length > 0) throw new Error('input_invalid: ' + errors.join('; '));\n\nreturn [{ json: { valid: true, body, requestId: rid } }];\n"
+      },
+      "id": "218910dc-e340-48ec-8492-513f12e5aa62",
+      "name": "Validate Input Schema",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        11616,
+        3744
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a04dc445-a333-44f1-bd97-16aacb48ad2c",
+              "name": "topic",
+              "value": "={{ $json.body.topic }}",
+              "type": "string"
+            },
+            {
+              "id": "1643cd1e-ad62-494e-ace9-c8779d9f9e3f",
+              "name": "content_pillar",
+              "value": "={{ $json.body.content_pillar }}",
+              "type": "string"
+            },
+            {
+              "id": "1a6715a4-3c3a-4822-9308-6fed2da16c4d",
+              "name": "product_angle",
+              "value": "={{ $json.body.product_angle }}",
+              "type": "string"
+            },
+            {
+              "id": "4125e1ff-ca10-48aa-a839-947cb61e87fe",
+              "name": "target_persona",
+              "value": "={{ $json.body.target_persona }}",
+              "type": "string"
+            },
+            {
+              "id": "e2c85c21-9bc3-4e09-9297-0f7c30ccd9ae",
+              "name": "tone",
+              "value": "={{ $json.body.tone }}",
+              "type": "string"
+            },
+            {
+              "id": "318e5123-b414-4d43-890f-1f37236c2290",
+              "name": "requestId",
+              "value": "={{ $json.body.request_id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fd004c46-c55f-4675-88c2-48d8ef4755eb",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        11840,
+        3456
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "slug-field",
+              "name": "slug",
+              "value": "={{ $json.output.slug }}",
+              "type": "string"
+            },
+            {
+              "id": "requestId-field",
+              "name": "requestId",
+              "value": "={{ $('Validate Input Schema').first().json.requestId }}",
+              "type": "string"
+            },
+            {
+              "id": "linkedinExcerpt-field",
+              "name": "linkedinExcerpt",
+              "value": "={{ $json.output.linkedin_excerpt }}",
+              "type": "string"
+            },
+            {
+              "id": "blogPayload-field",
+              "name": "blogPayload",
+              "value": "={{ (() => { const o = $json.output; const normalizeBlogBody = (input) => { const raw = String(input || ''); const lf = raw.replace(/\\r\\n/g, '\\n').replace(/\\r/g, '\\n'); const trimmed = lf.trim(); if (!trimmed) return trimmed; const collapsed = trimmed.replace(/\\n{3,}/g, '\\n\\n'); const hasParagraphBreaks = collapsed.includes('\\n\\n'); if (hasParagraphBreaks) return collapsed; return collapsed.replace(/([^\\n])\\n([^\\n])/g, '$1\\n\\n$2'); }; return { title: o.title, slug: o.slug, excerpt: o.excerpt || o.intro.substring(0, 250).trim(), content: normalizeBlogBody(o.body_draft), pillar: $('Normalize Input').first().json.content_pillar, tags: o.tags || [], authorName: 'Diwa Copilot' }; })() }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "986928f0-61f8-458b-b12d-2421048f7d53",
+      "name": "Map To Blog Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        12528,
+        3600
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = JSON.stringify($input.first().json.blogPayload);\n\n// Finalized inline configuration (n8n free-plan friendly).\nconst INLINE_SECRET = 'REPLACE_WITH_DIWA_BLOG_WEBHOOK_SECRET';\nconst INLINE_URL = 'https://app.diwacopilot.com/api/webhooks/blog';\n\nconst secret = String(INLINE_SECRET || '').trim();\nconst url = String(INLINE_URL || '').trim();\n\nif (!secret || secret === 'REPLACE_WITH_DIWA_BLOG_WEBHOOK_SECRET') {\n  throw new Error('downstream_config: replace INLINE_SECRET with your actual webhook secret');\n}\nif (secret.includes('%')) {\n  throw new Error('downstream_config: INLINE_SECRET contains invalid \"%\" character (often from copy/paste)');\n}\nif (/\\s/.test(secret)) {\n  throw new Error('downstream_config: INLINE_SECRET contains whitespace/newline characters');\n}\nif (!url) throw new Error('downstream_config: INLINE_URL not configured');\nif (!this.helpers?.httpRequest) throw new Error('downstream_runtime: n8n httpRequest helper not available');\n\nfunction toByteString(input) {\n  return unescape(encodeURIComponent(input));\n}\n\nfunction hexToByteString(hex) {\n  let out = '';\n  for (let i = 0; i < hex.length; i += 2) {\n    out += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16));\n  }\n  return out;\n}\n\nfunction sha256Hex(byteStr) {\n  const rightRotate = (value, amount) => (value >>> amount) | (value << (32 - amount));\n  const mathPow = Math.pow;\n  const maxWord = mathPow(2, 32);\n  const lengthProperty = 'length';\n  let i;\n  let j;\n  let result = '';\n\n  const words = [];\n  const asciiBitLength = byteStr[lengthProperty] * 8;\n\n  const hash = [\n    1779033703,\n    -1150833019,\n    1013904242,\n    -1521486534,\n    1359893119,\n    -1694144372,\n    528734635,\n    1541459225,\n  ];\n  const k = sha256Hex.k || [];\n  let primeCounter = k[lengthProperty];\n\n  const isComposite = {};\n  for (let candidate = 2; primeCounter < 64; candidate++) {\n    if (!isComposite[candidate]) {\n      for (i = 0; i < 313; i += candidate) {\n        isComposite[i] = candidate;\n      }\n      k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;\n    }\n  }\n\n  sha256Hex.k = k;\n\n  byteStr += '\\x80';\n  while ((byteStr[lengthProperty] % 64) - 56) byteStr += '\\x00';\n  for (i = 0; i < byteStr[lengthProperty]; i++) {\n    j = byteStr.charCodeAt(i);\n    words[i >> 2] |= j << (((3 - i) % 4) * 8);\n  }\n  words[words[lengthProperty]] = (asciiBitLength / maxWord) | 0;\n  words[words[lengthProperty]] = asciiBitLength;\n\n  for (j = 0; j < words[lengthProperty]; ) {\n    const w = words.slice(j, (j += 16));\n    const oldHash = hash.slice(0);\n\n    for (i = 0; i < 64; i++) {\n      const w15 = w[i - 15];\n      const w2 = w[i - 2];\n\n      const a = hash[0];\n      const e = hash[4];\n      const temp1 =\n        hash[7] +\n        (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) +\n        ((e & hash[5]) ^ (~e & hash[6])) +\n        k[i] +\n        (w[i] =\n          i < 16\n            ? w[i]\n            : (w[i - 16] +\n                (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) +\n                w[i - 7] +\n                (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) |\n              0);\n      const temp2 =\n        (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) +\n        ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));\n\n      hash.unshift((temp1 + temp2) | 0);\n      hash[4] = (hash[4] + temp1) | 0;\n      hash.pop();\n    }\n\n    for (i = 0; i < 8; i++) {\n      hash[i] = (hash[i] + oldHash[i]) | 0;\n    }\n  }\n\n  for (i = 0; i < 8; i++) {\n    for (j = 3; j + 1; j--) {\n      const b = (hash[i] >> (j * 8)) & 255;\n      result += ((b < 16) ? '0' : '') + b.toString(16);\n    }\n  }\n  return result;\n}\n\nfunction hmacSha256Hex(key, message) {\n  const blockSize = 64;\n  let keyBytes = toByteString(key);\n\n  if (keyBytes.length > blockSize) {\n    keyBytes = hexToByteString(sha256Hex(keyBytes));\n  }\n\n  while (keyBytes.length < blockSize) keyBytes += '\\x00';\n\n  let oKeyPad = '';\n  let iKeyPad = '';\n  for (let i = 0; i < blockSize; i++) {\n    const c = keyBytes.charCodeAt(i);\n    oKeyPad += String.fromCharCode(c ^ 0x5c);\n    iKeyPad += String.fromCharCode(c ^ 0x36);\n  }\n\n  const msgBytes = toByteString(message);\n  const innerHashHex = sha256Hex(iKeyPad + msgBytes);\n  const innerHashBytes = hexToByteString(innerHashHex);\n  return sha256Hex(oKeyPad + innerHashBytes);\n}\n\nasync function attempt(retryDelays) {\n  for (let i = 0; i <= retryDelays.length; i++) {\n    if (i > 0) await new Promise(r => setTimeout(r, retryDelays[i - 1]));\n\n    const ts = Date.now().toString();\n    const sig = hmacSha256Hex(secret, ts + '.' + payload);\n\n    let res;\n    try {\n      res = await this.helpers.httpRequest({\n        method: 'POST',\n        url,\n        json: false,\n        returnFullResponse: true,\n        ignoreHttpStatusErrors: true,\n        timeout: 30000,\n        headers: {\n          'Content-Type': 'application/json',\n          'X-Webhook-Signature': 'sha256=' + sig,\n          'X-Webhook-Timestamp': ts,\n        },\n        body: payload,\n      });\n    } catch (err) {\n      if (i === retryDelays.length) throw new Error('downstream_5xx_retry_exhausted: network error after retries: ' + err.message);\n      continue;\n    }\n\n    const status = res.statusCode ?? 0;\n    const rawBody = res.body;\n\n    if (status === 201) {\n      let resBody;\n      if (typeof rawBody === 'object' && rawBody !== null) {\n        resBody = rawBody;\n      } else {\n        try { resBody = JSON.parse(String(rawBody || '{}')); } catch { resBody = {}; }\n      }\n      return { status, body: resBody };\n    }\n\n    if (status === 409) {\n      let errBody;\n      if (typeof rawBody === 'object' && rawBody !== null) {\n        errBody = rawBody;\n      } else {\n        try { errBody = JSON.parse(String(rawBody || '{}')); } catch { errBody = {}; }\n      }\n      throw new Error('downstream_conflict_409: slug already exists: ' + JSON.stringify(errBody));\n    }\n\n    if (status >= 400 && status < 500) {\n      let errBody;\n      if (typeof rawBody === 'object' && rawBody !== null) {\n        errBody = rawBody;\n      } else {\n        try { errBody = JSON.parse(String(rawBody || '{}')); } catch { errBody = {}; }\n      }\n      throw new Error('downstream_4xx: status ' + status + ': ' + JSON.stringify(errBody));\n    }\n\n    if (i === retryDelays.length) {\n      throw new Error('downstream_5xx_retry_exhausted: status ' + status + ' after ' + (i + 1) + ' attempts');\n    }\n  }\n}\n\nconst result = await attempt([5000, 15000, 30000]);\nreturn [{ json: { deliveryStatus: result.status, deliveryBody: result.body } }];"
+      },
+      "id": "c93f943b-540a-45d6-b2ba-5557148b154b",
+      "name": "POST /api/webhooks/blog",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        12752,
+        3600
+      ],
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ accepted: true, slug: $(\"Map To Blog Payload\").first().json.slug, requestId: $(\"Map To Blog Payload\").first().json.requestId }) }}",
+        "options": {}
+      },
+      "id": "f5115587-56f8-4dcc-a102-6c4f72867173",
+      "name": "Respond 202 Accepted",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        12976,
+        3408
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_YOUR_SHEETS_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Blog Drafts",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $(\"Map To Blog Payload\").first().json.requestId }}",
+            "created_at": "={{ new Date().toISOString() }}",
+            "request_id": "={{ $(\"Map To Blog Payload\").first().json.requestId }}",
+            "topic": "={{ $('Normalize Input').first().json.topic }}",
+            "content_pillar": "={{ $('Normalize Input').first().json.content_pillar }}",
+            "target_persona": "={{ $('Normalize Input').first().json.target_persona }}",
+            "title": "={{ $(\"Map To Blog Payload\").first().json.blogPayload.title }}",
+            "slug": "={{ $(\"Map To Blog Payload\").first().json.slug }}",
+            "meta_description": "={{ $(\"Map To Blog Payload\").first().json.blogPayload.seo.metaDescription }}",
+            "intro": "={{ $(\"Map To Blog Payload\").first().json.blogPayload.excerpt }}",
+            "body_draft": "={{ $(\"Map To Blog Payload\").first().json.blogPayload.content }}",
+            "linkedin_excerpt": "={{ $(\"Map To Blog Payload\").first().json.linkedinExcerpt }}",
+            "downstream_status_code": "={{ $(\"POST /api/webhooks/blog\").first().json.deliveryStatus }}",
+            "downstream_status": "delivered",
+            "review_status": "pending_review",
+            "reviewed_by": "",
+            "approved_at": "",
+            "published_url": "",
+            "notes": ""
+          }
+        },
+        "options": {}
+      },
+      "id": "14862e8f-0425-4955-8ac2-6d24b778ecd9",
+      "name": "Mirror to Google Sheets (Observability)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        13200,
+        3600
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xkPsXzrwm8Vz3teI",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nfunction esc(v) {\n  if (typeof v !== 'string') return v;\n  return /^[=+\\-@]/.test(v) ? \"'\" + v : v;\n}\nconst d = $input.first().json;\nreturn [{\n  json: {\n    ...d,\n    _sheetsSafe: true, // sentinel so SheetsMirror knows this ran\n  }\n}];\n"
+      },
+      "id": "ec688116-b6b9-4779-8196-8c6dd5d4f6e5",
+      "name": "Escape Sheets Formula Chars",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        12976,
+        3600
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "8362962978",
+        "text": "={{ '✅ Blog draft delivered — *' + $(\"Map To Blog Payload\").first().json.slug + '*\\n' +\n      'request_id: ' + $(\"Map To Blog Payload\").first().json.requestId + '\\n' +\n      'downstream: ' + $(\"POST /api/webhooks/blog\").first().json.deliveryStatus + '\\n' +\n      'execution: ' + $execution.id + '\\n' +\n      'review: https://app.diwacopilot.com/admin/blog' }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "29086efa-a33e-45af-b15b-3946a7ee3c42",
+      "name": "Notify Telegram — Draft Delivered",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        13424,
+        3600
+      ],
+      "webhookId": "19e41e66-229a-4e48-b48b-4fad1e0e3daf",
+      "credentials": {
+        "telegramApi": {
+          "id": "f7YZ9RlWuJ8db45t",
+          "name": "Telegram: Diwa Blog Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ error: $json.error?.message ?? \"internal_error\" }) }}",
+        "options": {}
+      },
+      "id": "136619ae-9ab3-4b54-b0c7-586ca8d34fb0",
+      "name": "Respond 4xx/5xx on Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        12528,
+        3968
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "8362962978",
+        "text": "={{ (() => {\n      const msg = $json.error?.message ?? 'unknown error';\n      let classification = 'check payload and try again';\n      if (msg.startsWith('downstream_conflict_409')) classification = 'DO NOT RETRY — slug already exists';\n      if (msg.startsWith('downstream_5xx')) classification = 'service issue — retry after 10 min';\n      if (msg.startsWith('auth_invalid')) classification = 'auth failure — check signature config';\n      if (msg.startsWith('replay_detected')) classification = 'duplicate request_id — do not retry';\n      return '🚨 Content Factory error\\n' + 'classification: ' + classification + '\\n' + 'error: ' + msg.substring(0, 300) + '\\n' + 'execution: ' + $execution.id;\n    })() }}",
+        "additionalFields": {}
+      },
+      "id": "ec5c5c4d-81ee-409f-a17c-6ba9982d4a7a",
+      "name": "Notify Telegram — Error Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        12784,
+        3952
+      ],
+      "webhookId": "de9f7678-6984-415f-a548-652055952569",
+      "credentials": {
+        "telegramApi": {
+          "id": "f7YZ9RlWuJ8db45t",
+          "name": "Telegram: Diwa Blog Bot"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        10944,
+        3648
+      ],
+      "id": "a4f92037-7b8e-4d66-bdc8-457e9e537968",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kLDJHTVdqZ7Vt0GPVXyFt2M6S92V2__307LdB5IFfNc",
+          "mode": "list",
+          "cachedResultName": "Content Engine",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLDJHTVdqZ7Vt0GPVXyFt2M6S92V2__307LdB5IFfNc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1575559979,
+          "mode": "list",
+          "cachedResultName": "Diwa Copilot Blog",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLDJHTVdqZ7Vt0GPVXyFt2M6S92V2__307LdB5IFfNc/edit#gid=1575559979"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status",
+              "lookupValue": "pending"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        11168,
+        3744
+      ],
+      "id": "40fc36fb-a2d6-4ee4-9999-c12d091ce10a",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xkPsXzrwm8Vz3teI",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $(\"Get row(s) in sheet\").first().json;\nconst TONES = ['clear_practical','direct_supportive','concise_confident'];\n\nconst cache = $getWorkflowStaticData('global');\nconst lastToneIdx = typeof cache.lastToneIdx    === 'number' ? cache.lastToneIdx    : -1;\nconst toneIdx = (lastToneIdx + 1) % TONES.length;\n\ncache.lastToneIdx    = toneIdx;\n\nconst body = {\n  request_id: data.row_number,\n  topic: data.topic,\n  content_pillar: data.content_pillar,\n  product_angle: data.suggested_angle,\n  target_persona: data.suggested_persona,\n  tone:           TONES[toneIdx],\n  requested_by:   'scheduler',\n};\n\nreturn [{ json: { valid: true, body, requestId: body.request_id } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        11392,
+        3744
+      ],
+      "id": "5eb265af-5652-421b-8f5e-36b7257bd0de",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "chatId": "8362962978",
+        "text": "=*New Topics Generated*\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        12192,
+        2976
+      ],
+      "id": "73513476-ba17-4897-8fd2-2e8a423430ad",
+      "name": "Success",
+      "webhookId": "9ebd8713-165b-4ba5-9866-9856be65c1dd",
+      "credentials": {
+        "telegramApi": {
+          "id": "f7YZ9RlWuJ8db45t",
+          "name": "Telegram: Diwa Blog Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8362962978",
+        "text": "Error generating topics",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        12192,
+        3136
+      ],
+      "id": "f1bd35ce-676b-402e-a817-f30cfcc48c66",
+      "name": "Error",
+      "webhookId": "9db92066-f12f-4ea9-9eb4-25cccb930ebc",
+      "credentials": {
+        "telegramApi": {
+          "id": "f7YZ9RlWuJ8db45t",
+          "name": "Telegram: Diwa Blog Bot"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Append Topics to Sheet": [
+      {
+        "json": {
+          "topic": "Ace 2026 AI-Powered Interviews: A Filipino's Guide to Diwa Copilot Prep",
+          "content_pillar": "interview-prep",
+          "suggested_angle": "mock-interview",
+          "suggested_persona": "fresh_graduate",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      },
+      {
+        "json": {
+          "topic": "Future-Proof Your Career: Growth Strategies for SEA Professionals in 2026",
+          "content_pillar": "career-growth",
+          "suggested_angle": "interview-conversion",
+          "suggested_persona": "career_shifter",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 1
+        }
+      },
+      {
+        "json": {
+          "topic": "Navigating the 2026 Philippine Job Market: Smart Strategies & AI Tools",
+          "content_pillar": "job-search",
+          "suggested_angle": "cv-jd-context",
+          "suggested_persona": "non_tech_professional",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 2
+        }
+      },
+      {
+        "json": {
+          "topic": "Beyond Diwa Copilot: Top AI Tools for Job Seekers in 2026",
+          "content_pillar": "ai-tools",
+          "suggested_angle": "real-time-coaching",
+          "suggested_persona": "fresh_graduate",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 3
+        }
+      },
+      {
+        "json": {
+          "topic": "Diwa Copilot's New Feature: Real-time Feedback for Technical Interviews",
+          "content_pillar": "product-updates",
+          "suggested_angle": "real-time-coaching",
+          "suggested_persona": "software_engineer",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 4
+        }
+      },
+      {
+        "json": {
+          "topic": "Mastering Behavioral Questions: STAR Method for 2026 Filipino Interviews",
+          "content_pillar": "behavioral",
+          "suggested_angle": "mock-interview",
+          "suggested_persona": "career_shifter",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 5
+        }
+      },
+      {
+        "json": {
+          "topic": "Cracking Technical Interviews: Essential Skills for Software Engineers in 2026",
+          "content_pillar": "technical",
+          "suggested_angle": "mock-interview",
+          "suggested_persona": "software_engineer",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 6
+        }
+      },
+      {
+        "json": {
+          "topic": "Philippine Salary Benchmarks 2026: Negotiating Your Worth in Tech & Non-Tech",
+          "content_pillar": "salary",
+          "suggested_angle": "interview-conversion",
+          "suggested_persona": "non_tech_professional",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 7
+        }
+      },
+      {
+        "json": {
+          "topic": "AI-Optimized Resumes: Standing Out to Recruiters in the 2026 Job Market",
+          "content_pillar": "resume-cv-building",
+          "suggested_angle": "cv-jd-context",
+          "suggested_persona": "fresh_graduate",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 8
+        }
+      },
+      {
+        "json": {
+          "topic": "Digital Networking for Filipinos: Building Connections in the 2026 Global Market",
+          "content_pillar": "networking-strategies",
+          "suggested_angle": "interview-conversion",
+          "suggested_persona": "career_shifter",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 9
+        }
+      },
+      {
+        "json": {
+          "topic": "Thriving Remotely in 2026: Tips for Filipino Professionals in Global Teams",
+          "content_pillar": "remote-work-tips",
+          "suggested_angle": "interview-conversion",
+          "suggested_persona": "non_tech_professional",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 10
+        }
+      },
+      {
+        "json": {
+          "topic": "Navigating Hybrid Work Culture: A Guide for SEA Professionals in 2026",
+          "content_pillar": "workplace-culture",
+          "suggested_angle": "real-time-coaching",
+          "suggested_persona": "fresh_graduate",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 11
+        }
+      },
+      {
+        "json": {
+          "topic": "Top 5 In-Demand Skills for Filipino Professionals in the 2026 Job Market",
+          "content_pillar": "skill-development",
+          "suggested_angle": "cv-jd-context",
+          "suggested_persona": "career_shifter",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 12
+        }
+      },
+      {
+        "json": {
+          "topic": "Building Your Digital Brand: Stand Out to Employers in 2026 SEA Market",
+          "content_pillar": "personal-branding",
+          "suggested_angle": "interview-conversion",
+          "suggested_persona": "fresh_graduate",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 13
+        }
+      },
+      {
+        "json": {
+          "topic": "Prioritizing Mental Wellness: Strategies for Remote & Hybrid Filipino Workers",
+          "content_pillar": "mental-wellness-work",
+          "suggested_angle": "real-time-coaching",
+          "suggested_persona": "non_tech_professional",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 14
+        }
+      },
+      {
+        "json": {
+          "topic": "The 2026 Gig Economy: Opportunities for Filipino Freelancers & Remote Workers",
+          "content_pillar": "freelancing-gig-economy",
+          "suggested_angle": "interview-conversion",
+          "suggested_persona": "career_shifter",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 15
+        }
+      },
+      {
+        "json": {
+          "topic": "Landing Your Dream Role: Thriving in the Vibrant SEA Startup Ecosystem 2026",
+          "content_pillar": "startup-careers",
+          "suggested_angle": "cv-jd-context",
+          "suggested_persona": "software_engineer",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 16
+        }
+      },
+      {
+        "json": {
+          "topic": "Global Careers for Filipinos: Finding Opportunities Abroad in 2026",
+          "content_pillar": "international-opportunities",
+          "suggested_angle": "cv-jd-context",
+          "suggested_persona": "software_engineer",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 17
+        }
+      },
+      {
+        "json": {
+          "topic": "Leading in the AI Era: Essential Skills for Filipino Managers in 2026",
+          "content_pillar": "leadership-management",
+          "suggested_angle": "real-time-coaching",
+          "suggested_persona": "non_tech_professional",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 18
+        }
+      },
+      {
+        "json": {
+          "topic": "Beyond Salary: Master Negotiation Skills for Your 2026 Job Offer in SEA",
+          "content_pillar": "negotiation-skills",
+          "suggested_angle": "interview-conversion",
+          "suggested_persona": "non_tech_professional",
+          "status": "pending"
+        },
+        "pairedItem": {
+          "item": 19
+        }
+      }
+    ],
+    "Map To Blog Payload": [
+      {
+        "json": {
+          "slug": "ace-ai-interviews-filipino-fresh-grad-prep",
+          "requestId": "2",
+          "linkedinExcerpt": "Filipino fresh grads, the future of interviews is here! 🇵🇭 Learn how to ace 2026's AI-powered interviews with practical strategies and the power of mock interview prep. Get ready to boost your confidence and land your dream job! #AIInterviews #FreshGrad #CareerPrep #Philippines",
+          "blogPayload": {
+            "title": "Ace Your 2026 AI Interviews: A Filipino Fresh Grad's Guide to Mock Prep",
+            "slug": "ace-ai-interviews-filipino-fresh-grad-prep",
+            "excerpt": "Prepare to ace 2026's AI-powered interviews with this practical guide for Filipino fresh graduates, focusing on mastering mock interview techniques to build confidence and secure your first job.",
+            "content": "For many fresh graduates, the concept of an AI interview might sound intimidating. Imagine a scenario where you're asked to record video responses or engage with a chatbot, and an algorithm evaluates your tone, facial expressions, keywords, and even your speaking pace. This isn't science fiction; it's the reality of modern recruitment. Companies use AI to streamline the initial screening process, identify candidates who best match job requirements, and reduce unconscious bias. As a fresh graduate, you're likely to encounter these systems early in your job search, often for high-volume entry-level roles. The key is to understand that AI isn't looking to trick you; it's looking for consistency, clarity, and specific indicators of soft skills like communication, confidence, and problem-solving. Knowing this helps demystify the process and allows you to prepare more strategically.\n\nAs a Filipino fresh graduate, you possess inherent strengths that are incredibly valuable in AI interviews. Our culture often emphasizes strong interpersonal skills, resilience, and adaptability – qualities that translate well into effective communication. Filipinos are known for their warmth, clear articulation in English (often a key requirement), and a natural ability to connect. These traits, when consciously applied, can shine through even in an AI-powered setting. For instance, clear pronunciation and a moderate speaking pace, common among many Filipinos, are beneficial for AI transcription and analysis. Your ability to convey sincerity and enthusiasm, often cultivated through our community-oriented upbringing, can also positively impact an AI's assessment of your engagement and personality fit. Leverage these cultural strengths by being authentic and confident.\n\nThe most effective way to prepare for an AI interview is through deliberate practice, and this is where mock interviews become your secret weapon. Think of it like practicing for a play: you wouldn't go on stage without rehearsing your lines and blocking. Similarly, you shouldn't face an AI interviewer without simulating the experience. Mock interviews allow you to get comfortable with the format – speaking to a camera, managing time limits, and formulating concise answers under pressure. This practice helps reduce anxiety and builds confidence. Crucially, it provides a safe space to make mistakes and learn from them *before* the real interview. Platforms designed for AI interview prep, like Diwa Copilot, offer simulated environments that mimic actual AI interview setups. They can provide instant feedback on aspects like your pacing, clarity, and even the keywords you use, helping you refine your responses to align with what AI recruiters are looking for. This iterative feedback loop is invaluable for fresh graduates who might have limited prior interview experience.\n\nBeyond mock interviews, several practical strategies can significantly boost your performance. First, **optimize your environment**. Ensure a quiet space with good lighting where your face is clearly visible. A plain background is ideal to minimize distractions. Second, **practice active listening and concise answering**. AI interviews often have strict time limits per question. Listen carefully, take a brief moment to structure your thoughts, and deliver your answer clearly and directly. Avoid rambling. Third, **focus on keywords**. Review the job description thoroughly and identify key skills and responsibilities. Weave these keywords naturally into your answers, as AI systems often scan for them. Fourth, **maintain good body language**. Smile genuinely, make \"eye contact\" with the camera, and use natural hand gestures. These non-verbal cues contribute to an impression of confidence and engagement, which AI can interpret positively. Finally, **record yourself**. Even without a dedicated platform, practicing in front of your phone camera and reviewing your performance can highlight areas for improvement.\n\nYou now have the knowledge and tools to approach AI interviews with confidence. Your action plan should be straightforward:\n1.  **Research**: Understand the company and the specific role. Anticipate potential questions based on the job description.\n2.  **Practice Consistently**: Engage in mock interviews regularly. Use tools that offer AI-powered feedback to refine your delivery and content.\n3.  **Refine Your Story**: As a fresh graduate, focus on academic projects, internships, volunteer work, and relevant extracurricular activities. Frame your experiences using the STAR method (Situation, Task, Action, Result) to provide structured, impactful answers.\n4.  **Technical Check**: Always do a tech check before the interview – internet connection, microphone, camera, and lighting.\n5.  **Mindset**: Approach the interview with a positive, confident attitude. Remember, it's an opportunity to showcase your potential.\n\nBy embracing these steps, especially leveraging mock interviews, you're not just preparing for an interview; you're building a foundation for a successful career start in the modern job market. Filipino fresh graduates are uniquely positioned to excel; it's about channeling those strengths effectively.",
+            "pillar": "interview-prep",
+            "tags": [
+              "ai-interviews",
+              "fresh-graduate",
+              "interview-prep",
+              "mock-interview",
+              "filipino-job-seeker",
+              "career-advice"
+            ],
+            "authorName": "Diwa Copilot"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input Schema": {
+      "main": [
+        [
+          {
+            "node": "Normalize Input",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond 4xx/5xx on Error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Telegram — Error Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Input": {
+      "main": [
+        [
+          {
+            "node": "Generate Blog Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map To Blog Payload": {
+      "main": [
+        [
+          {
+            "node": "POST /api/webhooks/blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /api/webhooks/blog": {
+      "main": [
+        [
+          {
+            "node": "Respond 202 Accepted",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Escape Sheets Formula Chars",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond 4xx/5xx on Error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Telegram — Error Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escape Sheets Formula Chars": {
+      "main": [
+        [
+          {
+            "node": "Mirror to Google Sheets (Observability)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mirror to Google Sheets (Observability)": {
+      "main": [
+        [
+          {
+            "node": "Notify Telegram — Draft Delivered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Topic Bank Schedule": {
+      "main": [
+        [
+          {
+            "node": "Generate Topic Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Blog Draft": {
+      "main": [
+        [
+          {
+            "node": "Map To Blog Payload",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond 4xx/5xx on Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Telegram — Error Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini 2.5 Flash": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Blog Draft",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog Draft Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Generate Blog Draft",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Topics": {
+      "main": [
+        [
+          {
+            "node": "Append Topics to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini 2.5 Flash — Topics": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Topic Ideas",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Topic Bank Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Topic Ideas": {
+      "main": [
+        [
+          {
+            "node": "Split Topics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Validate Input Schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Topic Bank Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Generate Topic Ideas",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "c2f82e28-c1de-41ae-8253-0e48d43c9045",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "86fb7b21c40938eab0ea3a51a0d7ade02c4fc0869d0f10417b157a2b42fd12cc"
+  },
+  "id": "ZCy6rbT6edXu6Jfr",
+  "tags": [
+    {
+      "updatedAt": "2026-04-26T23:03:08.479Z",
+      "createdAt": "2026-04-26T23:03:08.479Z",
+      "id": "guSD4NOG5rzThhV5",
+      "name": "Content Factory"
+    }
+  ]
+}
